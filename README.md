@@ -9,16 +9,23 @@
 
 ### Build and Install
 $ gem build chronos.gemspec
+
 $ rvm all do gem install ./chronos-0.0.1.gem
+
 
 ### Uninstall and clean-up
 $ rvm all do gem uninstall chronos
+
 $ rm chronos-0.0.1.gem
 
 
-# Usage
+## Tests
+$ bundle exec rake test
 
 
-# TODO
+## Usage
+
+
+## TODO
 
 * nesting and inheritance

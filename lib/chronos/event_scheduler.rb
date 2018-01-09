@@ -12,8 +12,8 @@ module Chronos
 
     def add_constraints(constraints)
       constraints.each do |constraint|
-        operation = constraint.delete(:operation)
-        expression = constraint.values.join('_')
+        operation = constraint.fetch(:operation)
+        expression = (constraint.values - [operation]).join('_')
         add_constraint(expression, operation)
       end
     end

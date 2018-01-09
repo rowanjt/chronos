@@ -104,4 +104,24 @@ class TestChronosEventScheduler < Minitest::Test
       end
     end
   end
+
+  context 'technical specs' do
+    context '#add_constraints' do
+      should 'not modify constraints (side effect)' do
+        constraints = [
+          {
+            operation: 'occurs',
+            repeats: 'yearly',
+            month: 'december',
+            day_index: 25
+          }
+        ]
+        expected_constraints =  Marshal.load(Marshal.dump(constraints))
+
+        @scheduler.add_constraints(constraints)
+
+        assert_equal expected_constraints, constraints
+      end
+    end
+  end
 end
