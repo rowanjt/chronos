@@ -11,6 +11,8 @@ module Chronos
     end
 
     def add_constraints(constraints)
+      return if constraints.any? {|c| c.has_key? :error }
+
       constraints.each do |constraint|
         operation = constraint.fetch(:operation)
         expression = (constraint.values - [operation]).join('_')
@@ -23,10 +25,19 @@ module Chronos
       @expr_builder.define { send(operation, send(expression)) }
     end
 
-    def schedule_event
+    def reset_constraints
       # NOTE: add will overwrite previous event expression
-      @schedule.add(@event, composite_temporal_expr)
       @expr_builder.reset
+    end
+
+    def constraints
+      # composite temporal expression
+      @expr_builder.ctx
+    end
+
+    def schedule_event
+      @schedule.add(@event, constraints)
+      reset_constraints
     end
 
     def check(time)
@@ -35,12 +46,6 @@ module Chronos
       else
         !@schedule.include?(@event, time)
       end
-    end
-
-    private
-
-    def composite_temporal_expr
-      @expr_builder.ctx
     end
   end
 end

@@ -28,4 +28,5 @@ $ bundle exec rake test
 
 ## TODO
 
+* rename constraint to criteria
 * nesting and inheritance

@@ -117,10 +117,23 @@ class TestChronosEventScheduler < Minitest::Test
           }
         ]
         expected_constraints =  Marshal.load(Marshal.dump(constraints))
+        actual_constraints = @scheduler.add_constraints(constraints)
+
+        assert_equal expected_constraints, actual_constraints
+      end
+
+      should 'not add constraints with errors' do
+        constraints = [{error: 'error message'}]
 
         @scheduler.add_constraints(constraints)
 
-        assert_equal expected_constraints, constraints
+        assert_nil @scheduler.constraints
+      end
+    end
+
+    context '#schedule_event' do
+      should 'return nil without constraints' do
+        assert_nil @scheduler.schedule_event
       end
     end
   end
