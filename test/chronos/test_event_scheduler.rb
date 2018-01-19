@@ -127,13 +127,7 @@ class TestChronosEventScheduler < Minitest::Test
 
         @scheduler.add_constraints(constraints)
 
-        assert_nil @scheduler.constraints
-      end
-    end
-
-    context '#schedule_event' do
-      should 'return nil without constraints' do
-        assert_nil @scheduler.schedule_event
+        refute @scheduler.constraints?
       end
     end
   end

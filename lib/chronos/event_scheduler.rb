@@ -1,8 +1,9 @@
 require 'runt' # ruby temporal expressions
 
 module Chronos
+  # EventScheduler
   class EventScheduler
-    def initialize(event_name, white_blacklist=true)
+    def initialize(event_name, white_blacklist = true)
       @schedule = Runt::Schedule.new
       @event = Runt::Event.new(event_name)
       @expr_builder = ExpressionBuilder.new
@@ -11,7 +12,7 @@ module Chronos
     end
 
     def add_constraints(constraints)
-      return if constraints.any? {|c| c.has_key? :error }
+      return if constraints.any? { |c| c.key? :error }
 
       constraints.each do |constraint|
         operation = constraint.fetch(:operation)
@@ -30,9 +31,8 @@ module Chronos
       @expr_builder.reset
     end
 
-    def constraints
-      # composite temporal expression
-      @expr_builder.ctx
+    def constraints?
+      !constraints.is_a?(Runt::Expressions::NullExpression)
     end
 
     def schedule_event
@@ -46,6 +46,13 @@ module Chronos
       else
         !@schedule.include?(@event, time)
       end
+    end
+
+    private
+
+    def constraints
+      # composite temporal expression
+      @expr_builder.ctx
     end
   end
 end
