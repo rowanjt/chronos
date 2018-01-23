@@ -57,7 +57,7 @@ class TestChronosConstraints < Minitest::Test
 
   should 'load nonexistent constraints' do
     constraints = Chronos::Constraints.get(@file_ident)
-    expect = [{error: "No such file or directory @ rb_sysopen - test/data/#{@file_ident}.json"}]
+    expect = {error: "No such file or directory @ rb_sysopen - test/data/#{@file_ident}.json"}
 
     assert_equal expect, constraints
   end

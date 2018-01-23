@@ -4,24 +4,23 @@ require 'active_support/core_ext/numeric/time'
 
 class TestChronosEventScheduler < Minitest::Test
   def setup
-    @scheduler = Chronos::EventScheduler.new('availability', false)
+    @scheduler = Chronos::EventScheduler.new(false)
   end
 
   context 'unavailability' do
     context 'recurring' do
       should 'be unavailable every year on Christmas day' do
         xmas_2k = Time.new(2000,12,25,10,30,00)
-        constraints = [
-          {
+        constraints = {
+          'Christmas Day' => {
             operation: 'occurs',
             repeats: 'yearly',
             month: 'december',
             day_index: 25
           }
-        ]
+        }
 
         @scheduler.add_constraints(constraints)
-        @scheduler.schedule_event
 
         refute @scheduler.check(xmas_2k)
         assert @scheduler.check(xmas_2k + 1.day)
@@ -29,11 +28,11 @@ class TestChronosEventScheduler < Minitest::Test
       end
 
       should 'be unavailable every last wednesday in december' do
-        last_wed_dec = Time.new(2016,12,28,10,00,00)
-        last_wed_dec2 = Time.new(2017,12,27,10,00,00)
-        last_wed_nov = Time.new(2017,11,26,10,30,00)
-        constraints = [
-          {
+        last_wed_dec = Time.new(2016, 12, 28, 10, 0, 0)
+        last_wed_dec2 = Time.new(2017, 12, 27, 10, 0, 0)
+        last_wed_nov = Time.new(2017, 11, 26, 10, 30, 0)
+        constraints = {
+          'event' => [{
             operation: 'occurs',
             repeats: 'yearly',
             month: 'december'
@@ -42,11 +41,10 @@ class TestChronosEventScheduler < Minitest::Test
             operation: 'every',
             ordinal: 'last',
             weekday_name: 'wednesday'
-          }
-        ]
+          }]
+        }
 
         @scheduler.add_constraints(constraints)
-        @scheduler.schedule_event
 
         refute @scheduler.check(last_wed_dec)
         refute @scheduler.check(last_wed_dec2)
@@ -56,10 +54,10 @@ class TestChronosEventScheduler < Minitest::Test
 
     context 'occurring' do
       should 'be unavailable on 2017 birthday' do
-        birthday = Time.new(2017,03,24,10,30,00)
-        birthday_next = Time.new(2018,03,24,10,30,00)
-        constraints = [
-          {
+        birthday = Time.new(2017, 03, 24, 10, 30, 0)
+        birthday_next = Time.new(2018, 03, 24, 10, 30, 0)
+        constraints = {
+          'birthday' => [{
             operation: 'occurs',
             repeats: 'yearly',
             month: 'march',
@@ -69,11 +67,10 @@ class TestChronosEventScheduler < Minitest::Test
             operation: 'on',
             repeats: 'year',
             year_index: 2017
-          }
-        ]
+          }]
+        }
 
         @scheduler.add_constraints(constraints)
-        @scheduler.schedule_event
 
         refute @scheduler.check(birthday)
         assert @scheduler.check(birthday + 1.day)
@@ -81,9 +78,9 @@ class TestChronosEventScheduler < Minitest::Test
       end
 
       should 'be unavailable on 2017/07/04' do
-        date = Date.new(2017,07,04)
-        constraints = [
-          {
+        date = Date.new(2017, 07, 04)
+        constraints = {
+          'a date' => [{
             operation: 'occurs',
             repeats: 'after',
             date: Date.new(2017,07,03).to_s
@@ -92,11 +89,10 @@ class TestChronosEventScheduler < Minitest::Test
             operation: 'occurs',
             repeats: 'before',
             date: Date.new(2017,07,05).to_s
-          }
-        ]
+          }]
+        }
 
         @scheduler.add_constraints(constraints)
-        @scheduler.schedule_event
 
         refute @scheduler.check(date)
         assert @scheduler.check(date + 1.day)
@@ -108,14 +104,14 @@ class TestChronosEventScheduler < Minitest::Test
   context 'technical specs' do
     context '#add_constraints' do
       should 'not modify constraints (side effect)' do
-        constraints = [
-          {
+        constraints = {
+          'event' => {
             operation: 'occurs',
             repeats: 'yearly',
             month: 'december',
             day_index: 25
           }
-        ]
+        }
         expected_constraints =  Marshal.load(Marshal.dump(constraints))
         actual_constraints = @scheduler.add_constraints(constraints)
 
@@ -123,7 +119,7 @@ class TestChronosEventScheduler < Minitest::Test
       end
 
       should 'not add constraints with errors' do
-        constraints = [{error: 'error message'}]
+        constraints = {error: 'error message'}
 
         @scheduler.add_constraints(constraints)
 

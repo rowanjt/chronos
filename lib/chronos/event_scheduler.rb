@@ -3,21 +3,25 @@ require 'runt' # ruby temporal expressions
 module Chronos
   # EventScheduler
   class EventScheduler
-    def initialize(event_name, white_blacklist = true)
+    def initialize(white_blacklist = true)
       @schedule = Runt::Schedule.new
-      @event = Runt::Event.new(event_name)
       @expr_builder = ExpressionBuilder.new
 
       @white_blacklist = white_blacklist
     end
 
     def add_constraints(constraints)
-      return if constraints.any? { |c| c.key? :error }
+      return if constraints.key? :error
 
-      constraints.each do |constraint|
-        operation = constraint.fetch(:operation)
-        expression = (constraint.values - [operation]).join('_')
-        add_constraint(expression, operation)
+      constraints.each do |event_name, expressions|
+        expressions = ([] << expressions).flatten
+        expressions.each do |constraint|
+          operation = constraint.fetch(:operation)
+          expression = (constraint.values - [operation]).join('_')
+          add_constraint(expression, operation)
+        end
+
+        schedule_event(event_name)
       end
     end
 
@@ -35,16 +39,17 @@ module Chronos
       !constraints.is_a?(Runt::Expressions::NullExpression)
     end
 
-    def schedule_event
-      @schedule.add(@event, constraints)
+    def schedule_event(event_name)
+      @schedule.add(event_name, constraints)
       reset_constraints
     end
 
     def check(time)
       if @white_blacklist
-        @schedule.include?(@event, time)
+        # @schedule.include?(@event, time)
+        @schedule.events(time).any?
       else
-        !@schedule.include?(@event, time)
+        @schedule.events(time).none?
       end
     end
 

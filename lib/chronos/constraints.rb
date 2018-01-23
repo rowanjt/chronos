@@ -1,6 +1,7 @@
 require 'json'
 
 module Chronos
+  # Constraints
   class Constraints
     class << self
       def generate_constraints_id
@@ -12,7 +13,7 @@ module Chronos
         data = File.read(path)
         JSON.parse(data, symbolize_names: true)
       rescue Errno::ENOENT => e
-        [{error: e.message}]
+        { error: e.message }
       end
 
       def put(id, constraints)
@@ -38,6 +39,6 @@ module Chronos
         file_name = "#{id}.json"
         [Chronos.configuration.data_path, file_name].join('/')
       end
-    end # class methods
+    end
   end
 end
