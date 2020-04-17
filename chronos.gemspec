@@ -1,6 +1,4 @@
 Gem::Specification.new do |spec|
-  # Only with ruby 2.3.x
-  spec.required_ruby_version = '~> 2.3'
   spec.name        = 'chronos'
   spec.version     = '0.0.1'
   spec.date        = '2017-12-15'
@@ -24,9 +22,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest', '~> 5.11'
   spec.add_development_dependency 'minitest-reporters', '~> 1.1'
   spec.add_development_dependency 'rake', '~> 12.3'
-  spec.add_development_dependency 'shoulda', '~> 3.5'
+  spec.add_development_dependency 'shoulda'
 
-  spec.add_dependency 'activesupport', '5.1.4'
+  spec.add_dependency 'activesupport'
   spec.add_dependency 'json', '2.1.0'
   # The application's Gemfile must tell bundler where to find that library
   # gem 'runt', git: 'https://github.com/rowanjt/runt.git', branch: 'master'
