@@ -22,10 +22,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest', '~> 5.11'
   spec.add_development_dependency 'minitest-reporters', '~> 1.1'
   spec.add_development_dependency 'rake', '~> 12.3'
-  spec.add_development_dependency 'shoulda'
+  spec.add_development_dependency 'shoulda', '~> 3.6'
 
-  spec.add_dependency 'activesupport'
-  spec.add_dependency 'json', '2.1.0'
+  spec.add_dependency 'activesupport', '~> 5.2'
+  spec.add_dependency 'json', '2.3.0'
   # The application's Gemfile must tell bundler where to find that library
   # gem 'runt', git: 'https://github.com/rowanjt/runt.git', branch: 'master'
   spec.add_dependency 'runt'
