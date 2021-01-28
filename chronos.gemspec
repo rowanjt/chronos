@@ -17,15 +17,15 @@ Gem::Specification.new do |spec|
     'source_code_uri' => 'https://github.com/rowanjt/chronos'
   }
 
-  spec.add_development_dependency 'guard', '~> 2.14'
+  spec.add_development_dependency 'guard', '~> 2.16'
   spec.add_development_dependency 'guard-minitest', '~> 2.4'
-  spec.add_development_dependency 'minitest', '~> 5.11'
-  spec.add_development_dependency 'minitest-reporters', '~> 1.1'
-  spec.add_development_dependency 'rake', '~> 12.3'
-  spec.add_development_dependency 'shoulda', '~> 3.6'
+  spec.add_development_dependency 'minitest', '~> 5.14'
+  spec.add_development_dependency 'minitest-reporters', '~> 1.4'
+  spec.add_development_dependency 'rake', '~> 13.0'
+  spec.add_development_dependency 'shoulda', '~> 4.0'
 
-  spec.add_dependency 'activesupport', '~> 5.2'
-  spec.add_dependency 'json', '2.3.0'
+  spec.add_dependency 'activesupport', '~> 6'
+  spec.add_dependency 'json', '2.5'
   # The application's Gemfile must tell bundler where to find that library
   # gem 'runt', git: 'https://github.com/rowanjt/runt.git', branch: 'master'
   spec.add_dependency 'runt'
