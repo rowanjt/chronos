@@ -24,7 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'shoulda', '~> 4.0'
 
-  spec.add_dependency 'activesupport', '~> 6'
   spec.add_dependency 'json', '2.5'
   # The application's Gemfile must tell bundler where to find that library
   # gem 'runt', git: 'https://github.com/rowanjt/runt.git', branch: 'master'
